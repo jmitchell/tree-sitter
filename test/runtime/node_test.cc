@@ -757,6 +757,16 @@ describe("TreeCursor", [&]() {
     AssertThat(ts_tree_cursor_goto_parent(&cursor), IsTrue());
     AssertThat(ts_tree_cursor_goto_first_child_for_byte(&cursor, 0), Equals(0));
   });
+
+  it("walks the tree correctly when there are hidden leaf nodes", [&]() {
+    ts_parser_set_language(parser, load_language("javascript"));
+    ts_tree_cursor_delete(&cursor);
+    ts_tree_delete(tree);
+
+    tree = ts_parser_parse_string(parser, nullptr, "` ${1} ${2} `", 13);
+    cursor = ts_tree_cursor_new(ts_tree_root_node(tree));
+
+  });
 });
 
 END_TEST
